@@ -14,7 +14,7 @@ export interface NavItem {
 
 export const navItems: NavItem[] = [
   { to: "/", label: "pet central", glyph: "★", blurb: "your home base" },
-  { to: "/create", label: "create a pet", glyph: "◕", blurb: "hatch a new lil guy" },
+  { to: "/addpet", label: "create a pet", glyph: "◕", blurb: "hatch a new lil guy" },
   { to: "/neomail", label: "mail", glyph: "✉", blurb: "read your messages" },
   { to: "/world", label: "world", glyph: "◍", blurb: "explore the lands" },
   { to: "/explore", label: "explore", glyph: "✧", blurb: "quests & events" },

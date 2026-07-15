@@ -1,18 +1,14 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { COLOURS, GENDERS, SPECIES } from "../data/types";
+import { COLOURS, GENDERS, SPECIES, SPECIES_DEFAULT_COLOUR } from "../data/types";
 import type { Colour, Gender, Pet, Species } from "../data/types";
-import { addPet } from "../data/store";
+import { CREATE_BONUS_NP, MAX_PETS, createPet, useOwner } from "../data/store";
 import PetAvatar from "../components/PetAvatar";
 
-/** Narrow a raw <select> value back to a known option, without casting. */
-function pick<T extends string>(options: readonly T[], value: string): T | undefined {
-  return options.find((option) => option === value);
-}
-
-// Create-a-Pet: name your lil guy and pick a species/colour/gender. A new pet
-// hatches at level 1 with fresh-out-of-the-egg stats (bloated, frail, etc.),
-// becomes your active pet, and you land on Quick Ref.
+// Create-a-Pet — a two-step wizard mirroring the reference flow: (1) choose a
+// species from a grid, (2) customise its colour, gender, and name. Hatches a
+// level-1 lil guy into the store, awards the creation NP bonus, and makes it
+// active. Species/art/copy are our own.
 
 /** Stats a lil guy hatches with. Mirrors a brand-new classic pet. */
 function newHatchling(name: string, species: Species, colour: Colour, gender: Gender): Pet {
@@ -40,110 +36,151 @@ function newHatchling(name: string, species: Species, colour: Colour, gender: Ge
 
 export default function CreatePet() {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [species, setSpecies] = useState<Species>(SPECIES[0]);
+  const owner = useOwner();
+
+  const [step, setStep] = useState<"species" | "customise">("species");
+  const [species, setSpecies] = useState<Species | null>(null);
   const [colour, setColour] = useState<Colour>(COLOURS[0]);
   const [gender, setGender] = useState<Gender>(GENDERS[0]);
+  const [name, setName] = useState("");
 
+  const remaining = MAX_PETS - owner.pets.length;
+  const atCap = remaining <= 0;
   const trimmed = name.trim();
-  const canCreate = trimmed.length >= 2 && trimmed.length <= 20;
+  const canHatch = species !== null && trimmed.length >= 2 && trimmed.length <= 20;
 
-  function handleSubmit(event: FormEvent) {
+  function chooseSpecies() {
+    if (species === null) return;
+    setColour(SPECIES_DEFAULT_COLOUR[species]); // default to its signature coat
+    setStep("customise");
+  }
+
+  function handleHatch(event: FormEvent) {
     event.preventDefault();
-    if (!canCreate) return;
-    addPet(newHatchling(trimmed, species, colour, gender));
+    if (species === null || !canHatch) return;
+    createPet(newHatchling(trimmed, species, colour, gender));
     navigate("/quickref");
   }
 
   return (
     <div className="page create-pet">
       <div className="banner">
-        <h1 className="banner-title">create a pet</h1>
+        <h1 className="banner-title">create.a.pet</h1>
       </div>
 
-      <p className="lead">hatch a brand-new lil guy. pick a look and give them a name.</p>
+      {step === "species" || species === null ? (
+        <>
+          <p className="lead">
+            <strong>step 1 — pick a species.</strong> hatching a lil guy earns you{" "}
+            {CREATE_BONUS_NP} NP! you can keep up to {MAX_PETS} at once
+            {atCap ? " — and you're full up right now." : ` — room for ${remaining} more.`}
+          </p>
 
-      <form className="create-form" onSubmit={handleSubmit}>
-        <div className="create-preview">
-          <PetAvatar
-            species={species}
-            colour={colour}
-            name={trimmed || "?"}
-            size={120}
-          />
-          <span className="create-preview-caption">
-            {colour} {species}
-          </span>
-        </div>
-
-        <div className="create-fields">
-          <label className="field">
-            <span className="field-label">name</span>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              maxLength={20}
-              placeholder="2–20 characters"
-              autoFocus
-            />
-          </label>
-
-          <label className="field">
-            <span className="field-label">species</span>
-            <select
-              value={species}
-              onChange={(e) => {
-                const next = pick(SPECIES, e.target.value);
-                if (next) setSpecies(next);
-              }}
-            >
-              {SPECIES.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="field">
-            <span className="field-label">colour</span>
-            <select
-              value={colour}
-              onChange={(e) => {
-                const next = pick(COLOURS, e.target.value);
-                if (next) setColour(next);
-              }}
-            >
-              {COLOURS.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <fieldset className="field field-genders">
-            <legend className="field-label">gender</legend>
-            {GENDERS.map((g) => (
-              <label key={g} className="radio">
+          <div className="species-grid">
+            {SPECIES.map((s) => (
+              <label
+                key={s}
+                className={species === s ? "species-card is-picked" : "species-card"}
+              >
+                <PetAvatar species={s} colour={SPECIES_DEFAULT_COLOUR[s]} name="" size={96} />
+                <span className="species-name">{s}</span>
                 <input
                   type="radio"
-                  name="gender"
-                  value={g}
-                  checked={gender === g}
-                  onChange={() => setGender(g)}
+                  name="species"
+                  value={s}
+                  checked={species === s}
+                  onChange={() => setSpecies(s)}
+                  disabled={atCap}
                 />
-                {g}
               </label>
             ))}
-          </fieldset>
+          </div>
 
-          <button type="submit" className="btn btn-primary" disabled={!canCreate}>
-            hatch my lil guy
-          </button>
-        </div>
-      </form>
+          <div className="wizard-buttons">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={chooseSpecies}
+              disabled={species === null || atCap}
+            >
+              i have chosen →
+            </button>
+          </div>
+        </>
+      ) : (
+        <form className="create-form" onSubmit={handleHatch}>
+          <div className="create-preview">
+            <PetAvatar species={species} colour={colour} name={trimmed} size={120} />
+            <span className="create-preview-caption">
+              {colour} {species}
+            </span>
+            <button
+              type="button"
+              className="link-button"
+              onClick={() => setStep("species")}
+            >
+              ← change species
+            </button>
+          </div>
+
+          <div className="create-fields">
+            <p className="lead">
+              <strong>step 2 — customise your {species}.</strong>
+            </p>
+
+            <fieldset className="field">
+              <legend className="field-label">colour</legend>
+              <div className="swatch-row">
+                {COLOURS.map((c) => (
+                  <label key={c} className={colour === c ? "swatch is-picked" : "swatch"}>
+                    <input
+                      type="radio"
+                      name="colour"
+                      value={c}
+                      checked={colour === c}
+                      onChange={() => setColour(c)}
+                    />
+                    <PetAvatar species={species} colour={c} name="" size={44} />
+                    <span className="swatch-name">{c}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
+            <fieldset className="field field-genders">
+              <legend className="field-label">gender</legend>
+              {GENDERS.map((g) => (
+                <label key={g} className="radio">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value={g}
+                    checked={gender === g}
+                    onChange={() => setGender(g)}
+                  />
+                  {g}
+                </label>
+              ))}
+            </fieldset>
+
+            <label className="field">
+              <span className="field-label">name</span>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                maxLength={20}
+                placeholder="2–20 characters"
+                autoFocus
+              />
+            </label>
+
+            <button type="submit" className="btn btn-primary" disabled={!canHatch}>
+              hatch my lil guy
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 }

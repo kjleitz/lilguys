@@ -31,6 +31,11 @@ export function useOwner(): Owner {
   return useSyncExternalStore(subscribe, getSnapshot);
 }
 
+/** How many lil guys one owner can keep at once (as on the reference site). */
+export const MAX_PETS = 4;
+/** NP awarded for creating a new lil guy (matches the reference). */
+export const CREATE_BONUS_NP = 50;
+
 /** Make a pet the active one (the pet you play/browse as). */
 export function setActivePet(petId: string): void {
   if (owner.activePetId === petId) return;
@@ -39,8 +44,17 @@ export function setActivePet(petId: string): void {
   emit();
 }
 
-/** Add a freshly created lil guy and make it active. */
-export function addPet(pet: Pet): void {
-  owner = { ...owner, pets: [...owner.pets, pet], activePetId: pet.id };
+/**
+ * Hatch a freshly created lil guy: add it, make it active, and award the
+ * creation NP bonus — all in one update. No-op if already at the pet cap.
+ */
+export function createPet(pet: Pet): void {
+  if (owner.pets.length >= MAX_PETS) return;
+  owner = {
+    ...owner,
+    pets: [...owner.pets, pet],
+    activePetId: pet.id,
+    np: owner.np + CREATE_BONUS_NP,
+  };
   emit();
 }

@@ -1,16 +1,10 @@
 # Pages to deep-capture with `npm run capture:grab` (screenshot + full HTML).
 #
-# This is a working QUEUE of pages we still need to grab (not a permanent
-# manifest). Already-captured pages live in capture/output/pages/. Lines
-# starting with # are ignored.
+# Working QUEUE (not a permanent manifest). Already-captured pages live in
+# capture/output/pages/. Lines starting with # are ignored.
 #
-# URLs below were decoded from the REAL sidebar/icon image maps in the captured
-# petcentral HTML (2004-style <map>/<area> nav) — so create-a-pet's true URL is
-# /addpet/, not the /create we guessed. These are the pet-system pages we clone
-# next in Phase 2.
+# Retry: /addpet/ (create-a-pet) timed out on the last run — a transient slow
+# load. Grab runs headed, so if a Cloudflare challenge appears in the browser
+# window, solve it and it'll continue.
 
 https://neopetsclassic.com/addpet/
-https://neopetsclassic.com/abilities/
-https://neopetsclassic.com/prizes/
-https://neopetsclassic.com/edithomepage/
-https://neopetsclassic.com/howtofeed/

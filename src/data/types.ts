@@ -19,6 +19,16 @@ export type Colour = (typeof COLOURS)[number];
 export const GENDERS = ["male", "female"] as const;
 export type Gender = (typeof GENDERS)[number];
 
+/** Each species' signature colour, used to show it in pickers before the
+ *  owner has chosen a coat. */
+export const SPECIES_DEFAULT_COLOUR: Record<Species, Colour> = {
+  blorb: "sunny",
+  sprig: "mossy",
+  tuffet: "berry",
+  nib: "dusk",
+  wisp: "coral",
+};
+
 /** A smaller companion that belongs to a Pet. */
 export interface Petpet {
   id: string;

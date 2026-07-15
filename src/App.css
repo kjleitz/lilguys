@@ -679,3 +679,90 @@ a:hover {
   color: var(--muted);
   font-style: italic;
 }
+
+/* ------ create-a-pet wizard ------ */
+
+.species-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+.species-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.9rem 0.5rem;
+  border: var(--border);
+  border-radius: var(--radius);
+  background: var(--paper);
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+.species-card:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--sun-deep);
+}
+.species-card.is-picked {
+  box-shadow: 4px 4px 0 var(--sun-deep);
+  background: var(--sun);
+}
+.species-name {
+  font-weight: 800;
+  text-transform: lowercase;
+}
+
+.wizard-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.link-button {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 700;
+  color: var(--link);
+  cursor: pointer;
+}
+.link-button:hover {
+  color: var(--link-hover);
+}
+
+.swatch-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.4rem;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.swatch:hover {
+  border-color: var(--ink);
+}
+.swatch.is-picked {
+  border-color: var(--ink);
+  background: var(--sun);
+}
+.swatch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.swatch-name {
+  font-size: 0.75rem;
+  text-transform: lowercase;
+}
+.species-card input[type="radio"] {
+  margin: 0;
+}

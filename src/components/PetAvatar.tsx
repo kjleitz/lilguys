@@ -40,9 +40,11 @@ export default function PetAvatar({ species, colour, name, size = 72, faded = fa
       <span className="pet-avatar-glyph" aria-hidden="true">
         {SPECIES_GLYPH[species]}
       </span>
-      <span className="pet-avatar-initial" aria-hidden="true">
-        {name.charAt(0)}
-      </span>
+      {name && (
+        <span className="pet-avatar-initial" aria-hidden="true">
+          {name.charAt(0)}
+        </span>
+      )}
     </span>
   );
 }

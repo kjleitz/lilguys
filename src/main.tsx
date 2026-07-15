@@ -12,7 +12,7 @@ import "./index.css";
 
 // Nav destinations that have a real page yet. Everything else in the nav falls
 // back to a walkable "coming soon" stub, so the whole skeleton stays navigable.
-const REAL_PAGES = new Set(["/create"]);
+const REAL_PAGES = new Set(["/addpet"]);
 
 const stubRoutes = navItems
   .filter((item) => item.to !== "/" && !REAL_PAGES.has(item.to))
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
       { index: true, element: <PetCentral /> },
       { path: "quickref", element: <QuickRef /> },
       { path: "pet/:petId", element: <PetPage /> },
-      { path: "create", element: <CreatePet /> },
+      { path: "addpet", element: <CreatePet /> },
       ...stubRoutes,
       { path: "*", element: <ComingSoon /> },
     ],

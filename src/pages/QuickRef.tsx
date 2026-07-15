@@ -74,7 +74,7 @@ export default function QuickRef() {
       </div>
 
       <p className="lead">
-        want another? <Link to="/create">create a new lil guy</Link>.
+        want another? <Link to="/addpet">create a new lil guy</Link>.
       </p>
     </div>
   );

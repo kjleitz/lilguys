@@ -58,8 +58,12 @@ tier words (`src/data/stats.ts`), so feeding/training can move them for real.
 - [x] **Quick Ref** (`/quickref`) — all pets, active is bold, click a picture to
       make it active (reactive), inactive pets faded.
 - [x] **Single pet's page** (`/pet/:id`) — portrait, full stat readout, make-active.
-- [~] **Create-a-Pet** (`/create`) — a working flow exists but was **guessed**,
-      not captured; rebuild it to match the real page once grabbed.
+- [x] **Create-a-Pet** (`/addpet`) — rebuilt from the captured `/addpet/`: a
+      two-step wizard (choose species → customise colour/gender/name), awards the
+      50 NP creation bonus, enforces the 4-pet cap. Step 1 matches the capture;
+      **step 2 (customise) is inferred** — the real colour/name page is
+      `/customizepet/`, reachable only after POSTing a species, so we couldn't
+      GET it. Capture it later (walk the real flow) to refine step 2.
 - [ ] **Care actions** — feed (needs items/economy, Phase 3), edit description.
 - [ ] **Public pet lookup** — capture `/petlookup/` + `/neopet_desc/` and build
       the public-facing view (distinct from the owner view).
