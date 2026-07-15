@@ -38,12 +38,18 @@ npm run capture:map -- https://neopetsclassic.com/petcentral/
 #    ...or crawl one hop into a few hub pages too:
 npm run capture:map -- --deep 8
 
-# 3. Once we've picked the pages that matter, list them in capture/urls.txt
-#    (one per line) and deep-capture screenshots + HTML:
+# 3. Deep-capture the pages you're about to build (capture-first: always grab a
+#    page before cloning it). urls.txt is a working QUEUE — put the URLs you
+#    still need in it (one per line), then:
 npm run capture:grab
 #    ...or pass URLs directly:
 npm run capture:grab -- https://neopetsclassic.com/petcentral/
 ```
+
+**Where discovery URLs come from:** the icon nav is a 2004 image map, not text
+links, so `capture:map`'s link list misses most of it. The real nav URLs are
+decoded in [`../docs/site-map.md`](../docs/site-map.md); the inventory of what's
+already captured is in [`../docs/reference-captures.md`](../docs/reference-captures.md).
 
 Map/grab run **headed by default** (a Chrome window appears and drives itself),
 because bot managers block headless. To try headless anyway: `CAPTURE_HEADLESS=1
@@ -70,6 +76,9 @@ and `capture/output/pages/*.html`. Point me at those and I'll use them to build.
   gitignored Chrome profile `capture/.profile`; all scripts share it so the
   user-agent (and any bot-clearance cookie) stays consistent. Treat it like a
   password.
-- **Icon nav links have no text.** Classic sidebars use image links, so the
-  extractor logs them as "(no text)". Read the nav off the screenshot, or improve
-  the extractor to pull `alt`/`title`/image filenames.
+- **The nav is a 2004 image map, not links.** The sidebar (and Pet Central's
+  icon rows) are one graphic plus `<map>`/`<area>` coordinate regions — no `<a>`
+  tags and no HTML5 landmarks — so both `map.ts`'s `navEl` selector and its
+  anchor-walking extractor miss the whole nav (`nav.html` comes back empty). To
+  read the nav, parse the `<area href/alt>` regions out of a grabbed page's HTML.
+  The decoded destinations are recorded in `../docs/site-map.md`.

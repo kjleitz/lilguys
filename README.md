@@ -83,15 +83,19 @@ Retarget it at any site via env vars (`CAPTURE_BASE_URL`, etc.) — see
 
 - ✅ Project scaffolded (Vite + React + TS, strict, builds clean)
 - ✅ Reference-capture tool working against neopetsclassic.com
-- ✅ App shell (sidebar + status box) and Pet Central / Quick Ref pages
-- 🔄 **Shifting to capture-first cloning:** grab each real page before building
-  it, and rebuild the pages built from assumptions (e.g. create-a-pet) to match.
-- ⏭️ **Next:** crawl the main areas, then clone them page-by-page. See
-  [`docs/roadmap.md`](docs/roadmap.md).
+- ✅ App shell (sidebar + status box), Pet Central, Quick Ref, single pet page
+- ✅ Create-a-Pet rebuilt from a real capture (capture-first workflow proven)
+- 🔄 **Phase 2 pet detail pages next** — description, abilities, trophies, public
+  lookup (all already captured).
+- ⏭️ **Start here:** the "Next up" section of [`docs/roadmap.md`](docs/roadmap.md).
 
 ## Docs
 
-- **[docs/site-map.md](docs/site-map.md)** — the areas/features/concepts of the
-  classic site we're modeling Lilguys on.
 - **[docs/roadmap.md](docs/roadmap.md)** — the phased build plan, what's done,
-  what's next, and the open decisions still to make.
+  what's next (**"Next up" tells you exactly where to start**), and open decisions.
+- **[docs/architecture.md](docs/architecture.md)** — how the code is laid out
+  (data layer, store, components, pages, conventions). Read this first to orient.
+- **[docs/reference-captures.md](docs/reference-captures.md)** — inventory of the
+  reference pages we've captured and which are cloned yet.
+- **[docs/site-map.md](docs/site-map.md)** — the areas/features/concepts of the
+  classic site we're modeling Lilguys on, plus the decoded real navigation URLs.

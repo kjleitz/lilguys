@@ -10,9 +10,10 @@ We build **near-exact visual replicas** of the reference pages, and we **capture
 each page before building it** (`capture:grab` → screenshot + full HTML), then
 reproduce its layout, styling, and behavior. No guessing at a page's design.
 Assets stay original (our art/logos/names/copy); we don't ship their files or
-paste prose verbatim. Pages built earlier from assumptions get rebuilt from a
-real capture — **create-a-pet is first in line** (the current version was
-guessed and doesn't match).
+paste prose verbatim.
+
+See [`reference-captures.md`](reference-captures.md) for what's already captured
+and [`architecture.md`](architecture.md) for how the code is laid out.
 
 ## Status at a glance
 
@@ -20,11 +21,41 @@ guessed and doesn't match).
 |---|---|
 | 0. Foundations & reference tooling | ✅ done |
 | 1. App shell + Pet Central hub | ✅ done |
-| 2. Pets: create, quick ref, pet page | ⏭️ **in progress** |
+| 2. Pets: create, quick ref, pet page | 🔄 **core done; detail pages next** |
 | 3. Economy: NP, inventory, a shop | ⬜ planned |
 | 4. Games (one game, wired to NP) | ⬜ planned |
 | 5. Social: boards / mail | ⬜ later |
 | 6+. World, contests, news, polish | ⬜ later |
+
+## ▶ Next up — start here
+
+Finish Phase 2's pet **detail pages**. These are already captured (see
+[`reference-captures.md`](reference-captures.md)), so it's pure capture → clone:
+
+1. **Pick a page** and read its capture (`capture/output/screenshots/*.png` +
+   `pages/*.html`). Good first targets, each linked from Quick Ref / the Pet
+   Central icon row:
+   - **Public pet lookup** — `/petlookup/?pet_name=…` (the public view of a pet;
+     currently our `/pet/:id` is the owner view).
+   - **Description (edit)** — `/neopet_desc/` (edit a pet's description; pairs with
+     the empty-description placeholder we already show).
+   - **Abilities** — `/abilities/`, **Trophies** — `/prizes/`.
+2. **Clone it** into a new page component (`src/pages/…`), wire the route in
+   `src/main.tsx`, and link it from where the real site links it. Reuse
+   `PetStats` / `PetAvatar` where they fit.
+3. **Verify in the browser** (Playwright: drive it, screenshot, check console).
+
+Parallel option if you'd rather polish: tighten the **shell styling** (sidebar,
+banners, spacing/type) against the captured `petcentral`/`quickref` screenshots
+to get closer to the real look.
+
+Before touching create-a-pet **step 2**, grab `/customizepet/` first (see the
+capture inventory) — it's the one pet page we couldn't capture, so step 2 is
+currently inferred.
+
+Ground rules never change: **capture first, original assets, strict TS, verify in
+the browser.** See [`architecture.md`](architecture.md) to get oriented in the
+code.
 
 ## Phase 0 — Foundations & reference tooling ✅
 
@@ -64,13 +95,13 @@ tier words (`src/data/stats.ts`), so feeding/training can move them for real.
       **step 2 (customise) is inferred** — the real colour/name page is
       `/customizepet/`, reachable only after POSTing a species, so we couldn't
       GET it. Capture it later (walk the real flow) to refine step 2.
+- [ ] **Pet detail pages** — description (`/neopet_desc/`), abilities
+      (`/abilities/`), trophies (`/prizes/`), pet's page (`/edithomepage/`). All
+      captured; see "Next up" above.
+- [ ] **Public pet lookup** (`/petlookup/`) — the public-facing view, distinct
+      from the owner view at `/pet/:id`. Captured.
 - [ ] **Care actions** — feed (needs items/economy, Phase 3), edit description.
-- [ ] **Public pet lookup** — capture `/petlookup/` + `/neopet_desc/` and build
-      the public-facing view (distinct from the owner view).
-
-Note: create-a-pet's real reference URL still isn't captured — the sidebar nav
-didn't extract (the capture tool looks for HTML5 landmarks this 2004-era site
-doesn't use). Grab it when polishing this flow.
+- [ ] **Refine create-a-pet step 2** — after capturing `/customizepet/`.
 
 ## Phase 3 — Economy
 
@@ -103,7 +134,11 @@ what make it fun *with friends* and are the reason for a real backend.
 
 ## Working agreements
 
+- **Capture first.** Never build a page from assumptions — grab the real one and
+  clone it. (This is why create-a-pet was rebuilt.)
 - Strict TypeScript; no `any` / `@ts-ignore` / casual casts (fix the types).
 - Original assets only; reference captures stay local (gitignored).
+- Verify non-trivial changes in the browser, not just via typecheck.
 - Track pre-existing bugs / flaky things in project memory so they aren't lost.
-- Keep this doc + `site-map.md` current as we learn more.
+- Keep the docs current as we learn: this file, `site-map.md`, `architecture.md`,
+  and `reference-captures.md`.
