@@ -1,0 +1,29 @@
+{
+  "name": "lilguys",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b --noEmit",
+    "capture:login": "tsx capture/login.ts",
+    "capture:map": "tsx capture/map.ts",
+    "capture:grab": "tsx capture/grab.ts"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "playwright": "^1.49.0",
+    "tsx": "^4.19.0",
+    "typescript": "~5.7.0",
+    "vite": "^6.0.0"
+  }
+}

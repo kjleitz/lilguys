@@ -1,0 +1,27 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+dist-ssr
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor / OS
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# --- Capture tool (KEEP OUT OF GIT) ---
+# Logged-in Chrome profile (holds your session cookies). Secret. Never commit.
+capture/.profile
+# Captured reference material (screenshots + HTML from the real site).
+# Reference only — not for redistribution. Keep it local.
+capture/output

@@ -1,0 +1,9 @@
+# One URL per line. Lines starting with # are ignored.
+# Add the pages whose layout/structure you want to reference while building.
+# These are just starting suggestions — edit freely.
+
+https://www.neopets.com/
+# https://www.neopets.com/inventory.phtml
+# https://www.neopets.com/quickref.phtml
+# https://www.neopets.com/market.phtml
+# https://www.neopets.com/games/
