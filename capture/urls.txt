@@ -3,8 +3,22 @@
 # Working QUEUE (not a permanent manifest). Already-captured pages live in
 # capture/output/pages/. Lines starting with # are ignored.
 #
-# Retry: /addpet/ (create-a-pet) timed out on the last run — a transient slow
-# load. Grab runs headed, so if a Cloudflare challenge appears in the browser
+# Grab runs headed, so if a Cloudflare challenge appears in the browser
 # window, solve it and it'll continue.
 
-https://neopetsclassic.com/addpet/
+# --- Phase 3: Shops storefront UI ---
+# Discovered from the imagemaps in objects.html (Neopia Central). The big
+# Neopia Central map (#map) and shop toolbar (#top_bar_Map) link out to these.
+#
+# Hub pages (themselves imagemaps over a big map image we don't have yet —
+# clone as placeholder-with-hotspots per the shop-map-imagemaps note):
+https://neopetsclassic.com/market_bazaar/
+https://neopetsclassic.com/market_plaza/
+#
+# Shop fronts (/viewshop/?shop_id=N — the item grid with prices). Grabbing two
+# for comparison; item-view URLs come from reading these after the grab:
+https://neopetsclassic.com/viewshop/?shop_id=2
+https://neopetsclassic.com/viewshop/?shop_id=3
+
+# --- Done (kept for reference; leave commented) ---
+# https://neopetsclassic.com/addpet/   # captured -> addpet.html

@@ -766,3 +766,199 @@ a:hover {
 .species-card input[type="radio"] {
   margin: 0;
 }
+
+/* ------------------------------------------------------------------ *
+ * shops — hubs, shop fronts, and placeholder art
+ * ------------------------------------------------------------------ */
+
+/* ------ placeholder art (stands in for item/keeper graphics) ------ */
+
+.placeholder-art {
+  display: inline-grid;
+  place-items: center;
+  border: var(--border);
+  border-radius: var(--radius);
+  line-height: 1;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+.placeholder-art.is-round {
+  border-radius: 50%;
+}
+
+/* ------ breadcrumbs ------ */
+
+.shop-crumbs {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+  text-transform: lowercase;
+}
+.shop-crumbs span {
+  color: var(--muted);
+}
+
+/* ------ hub map (placeholder-with-hotspots) ------ */
+
+.shop-map-placeholder {
+  display: grid;
+  place-items: center;
+  height: 180px;
+  margin-bottom: 1rem;
+  border: var(--border);
+  border-radius: var(--radius);
+  background: repeating-linear-gradient(
+      45deg,
+      var(--track),
+      var(--track) 12px,
+      var(--paper) 12px,
+      var(--paper) 24px
+    );
+}
+.shop-map-placeholder-caption {
+  padding: 0.35rem 0.8rem;
+  background: var(--sun);
+  border: var(--border);
+  border-radius: 8px;
+  font-weight: 800;
+  text-transform: lowercase;
+}
+
+/* image branch: shown once a hub has real map art (mapImage set) */
+.shop-map {
+  position: relative;
+  margin-bottom: 1rem;
+  border: var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.shop-map-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.shop-map-hotspot {
+  position: absolute;
+  border: 2px solid transparent;
+  border-radius: 6px;
+}
+.shop-map-hotspot:hover {
+  border-color: var(--ink);
+  background: rgba(255, 210, 63, 0.35);
+}
+
+/* ------ hub destination tiles ------ */
+
+.shop-dest-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.75rem;
+}
+.shop-dest {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  text-decoration: none;
+  color: var(--ink);
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  background: var(--paper);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+.shop-dest:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--sun-deep);
+  color: var(--ink);
+}
+.shop-dest-glyph {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+.shop-dest-label {
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-transform: lowercase;
+}
+.shop-dest-blurb {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+/* ------ shop front: keeper + note ------ */
+
+.shop-keeper {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  box-shadow: 4px 4px 0 var(--sun);
+  margin-bottom: 1rem;
+}
+.shop-keeper-text {
+  min-width: 0;
+}
+.shop-greeting {
+  margin: 0 0 0.3rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.shop-inflation {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-transform: lowercase;
+}
+.shop-note {
+  margin: 0 0 1rem;
+  padding: 0.5rem 0.8rem;
+  border: 2px dashed var(--ink);
+  border-radius: 8px;
+  background: var(--track);
+  font-size: 0.9rem;
+}
+
+/* ------ shop front: item grid ------ */
+
+.item-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+.item-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.2rem;
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: 0.8rem 0.6rem;
+  background: var(--paper);
+}
+.item-name {
+  font-weight: 800;
+  text-transform: lowercase;
+  margin-top: 0.2rem;
+}
+.item-blurb {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.3;
+}
+.item-stock {
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-transform: lowercase;
+}
+.item-price {
+  font-weight: 800;
+}
+.item-buy {
+  margin-top: auto; /* bottom-align across a row despite varying blurb heights */
+}

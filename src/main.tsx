@@ -6,13 +6,15 @@ import PetCentral from "./pages/PetCentral.tsx";
 import QuickRef from "./pages/QuickRef.tsx";
 import PetPage from "./pages/PetPage.tsx";
 import CreatePet from "./pages/CreatePet.tsx";
+import ShopsHub from "./pages/ShopsHub.tsx";
+import ShopFront from "./pages/ShopFront.tsx";
 import ComingSoon from "./pages/ComingSoon.tsx";
 import { navItems } from "./data/nav.ts";
 import "./index.css";
 
 // Nav destinations that have a real page yet. Everything else in the nav falls
 // back to a walkable "coming soon" stub, so the whole skeleton stays navigable.
-const REAL_PAGES = new Set(["/addpet"]);
+const REAL_PAGES = new Set(["/addpet", "/shops"]);
 
 const stubRoutes = navItems
   .filter((item) => item.to !== "/" && !REAL_PAGES.has(item.to))
@@ -27,6 +29,9 @@ const router = createBrowserRouter([
       { path: "quickref", element: <QuickRef /> },
       { path: "pet/:petId", element: <PetPage /> },
       { path: "addpet", element: <CreatePet /> },
+      { path: "shops", element: <ShopsHub /> },
+      { path: "shops/shop/:shopId", element: <ShopFront /> },
+      { path: "shops/:hubId", element: <ShopsHub /> },
       ...stubRoutes,
       { path: "*", element: <ComingSoon /> },
     ],

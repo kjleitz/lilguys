@@ -78,8 +78,45 @@ row of world/community shortcuts (world events, calendar `/calendar/`, all pets
 `/allpets/`, quests `/quests/`, high scores `/topneopets/`, greeting
 `/sendgreeting/`, all petpets `/allpetpets/`).
 
+## The shops area (decoded from the captured HTML)
+
+Captured for Phase 3 (`objects`, `market_bazaar`, `market_plaza`,
+`viewshop?shop_id=2`/`=3`). Like the sidebar, the hubs are **2004-style image
+maps** over one big map graphic — clickable regions, not text links. We don't
+have those map graphics, so clone them as **placeholder-with-hotspots**: keep
+the link regions/routes, swap the real art in later.
+
+**Hub hierarchy:**
+- **Neopia Central** `/objects/` — top shops hub. Big map (`#map`) links to the
+  two sub-hubs plus standalone shops (Magic `shop_id=1`, Fresh Foods `=2`, Book
+  `=3`, Petpet `=4`, Post Office `=29`, Pharmacy `=42`), the Craft Stall
+  `/objects/craft_stall/`, and non-shop stops (bank, rainbow pool, etc.).
+- **Neopian Bazaar** `/market_bazaar/` — 16 NPC shop fronts (all `/viewshop/?shop_id=N`).
+- **Neopian Plaza** `/market_plaza/` — a mix of shops (`shop_id=15/68/69/70`) and
+  services (pound, hospital, wishing well, vending, welcome centre).
+
+**Shop toolbar** (`#top_bar_Map`, on every shops page): Your Items `/inventory/`
+· Your Shop `/market/` · Shop Wizard `/market/wizard/` · The Marketplace
+`/market_map/` · Auctions `/auctions/` · Bank `/bank/` · Trading Post
+`/island/tradingpost/` · Safety Deposit `/safetydeposit/` · Money Tree
+`/donations/` · Main Shops Map `/objects/`.
+
+**Shop front** (`/viewshop/?shop_id=N`) — the item grid:
+- Header: shopkeeper image (`/static/images/shopkeepers/N.gif`, 150×150),
+  "Welcome to <Shop Name>", "Please click on an item you wish to buy", and a
+  live "Neopian Inflation is currently at X%" line.
+- Grid: ~40 item cells, each = item image (`/images/items/<slug>.gif`, 80×80),
+  name (`<b>`), "N in stock", "Cost : N NP".
+- **No item-detail page.** Clicking an item goes straight to a haggle/purchase
+  page `/haggle/<uuid>/?r=N` (ephemeral per-transaction URL) gated by a JS
+  `confirm()`. That's the *buying* flow → **Phase 4**. For Phase 3 the item grid
+  is the whole shop front; the inventory item view (`/inventory/`, captured) is
+  the "item detail" counterpart. Purchases stay stubbed/disabled until Phase 4.
+
 ## Known gaps in this map
 
-- We've deep-captured the pet system + core shell pages (see
+- We've deep-captured the pet system + core shell pages + the shops area (see
   `capture/output/pages/`). Other areas (a game, a world, boards) get captured
   just before we build them — capture-first.
+- Not yet captured for shops (Phase 4 territory): the haggle/purchase page,
+  Your Shop `/market/`, Shop Wizard `/market/wizard/`, the Marketplace map.
