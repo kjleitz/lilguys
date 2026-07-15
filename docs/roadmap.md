@@ -21,37 +21,50 @@ and [`architecture.md`](architecture.md) for how the code is laid out.
 |---|---|
 | 0. Foundations & reference tooling | ✅ done |
 | 1. App shell + Pet Central hub | ✅ done |
-| 2. Pets: create, quick ref, pet page | 🔄 **core done; detail pages next** |
-| 3. Economy: NP, inventory, a shop | ⬜ planned |
-| 4. Games (one game, wired to NP) | ⬜ planned |
-| 5. Social: boards / mail | ⬜ later |
-| 6+. World, contests, news, polish | ⬜ later |
+| 2. Pets: create, quick ref, pet page | 🔄 core done; detail pages next |
+| 3. Shops & items — storefront UI (on the mock) | 🔜 **pulled forward** |
+| 4. Real economy — spending & persistence | ⬜ needs backend decision |
+| 5. Games (one game, wired to NP) | ⬜ planned |
+| 6. Social: boards / mail | ⬜ later |
+| 7+. World, contests, news, polish | ⬜ later |
 
 ## ▶ Next up — start here
 
-Finish Phase 2's pet **detail pages**. These are already captured (see
-[`reference-captures.md`](reference-captures.md)), so it's pure capture → clone:
+**Shops have been pulled forward** (Phase 3). We build the storefront UI on the
+in-memory mock now; "actually spend NP and keep it" is deferred to Phase 4 (it
+needs the backend decision). Two tracks, do them in whatever order suits:
 
-1. **Pick a page** and read its capture (`capture/output/screenshots/*.png` +
-   `pages/*.html`). Good first targets, each linked from Quick Ref / the Pet
-   Central icon row:
-   - **Public pet lookup** — `/petlookup/?pet_name=…` (the public view of a pet;
-     currently our `/pet/:id` is the owner view).
-   - **Description (edit)** — `/neopet_desc/` (edit a pet's description; pairs with
-     the empty-description placeholder we already show).
-   - **Abilities** — `/abilities/`, **Trophies** — `/prizes/`.
-2. **Clone it** into a new page component (`src/pages/…`), wire the route in
-   `src/main.tsx`, and link it from where the real site links it. Reuse
-   `PetStats` / `PetAvatar` where they fit.
-3. **Verify in the browser** (Playwright: drive it, screenshot, check console).
+### Track A — Shops storefront UI (the priority)
 
-Parallel option if you'd rather polish: tighten the **shell styling** (sidebar,
-banners, spacing/type) against the captured `petcentral`/`quickref` screenshots
-to get closer to the real look.
+1. **Capture the shop area first** — we only have the shops index (`/objects/`),
+   not the Neopia Central / bazaar / plaza sub-pages. Run a discovery pass to
+   find their real URLs, then grab them:
+   ```
+   npm run capture:map -- https://neopetsclassic.com/objects/ --deep 8
+   npm run capture:grab      # after adding the discovered URLs to capture/urls.txt
+   ```
+2. **Clone the storefronts** from the captures: the shopping hub, a shop front
+   (grid of items with prices), and an item view. Wire routes in `src/main.tsx`;
+   promote the `shops` nav stub to a real page.
+3. **Wire to the mock, not persistence:** browsing works against mock item data;
+   "buy" can be stubbed/disabled with a note until Phase 4. Read the NP balance
+   from the store; don't yet mutate it on purchase.
 
-Before touching create-a-pet **step 2**, grab `/customizepet/` first (see the
-capture inventory) — it's the one pet page we couldn't capture, so step 2 is
-currently inferred.
+### Track B — Finish Phase 2 pet detail pages
+
+Already captured (see [`reference-captures.md`](reference-captures.md)) — pure
+capture → clone. Good targets, each linked from Quick Ref / the Pet Central icon
+row: **public pet lookup** `/petlookup/`, **description** `/neopet_desc/`,
+**abilities** `/abilities/`, **trophies** `/prizes/`.
+
+### Either way
+
+- Reuse `PetStats` / `PetAvatar` where they fit; wire routes in `src/main.tsx`.
+- **Verify in the browser** (Playwright: drive it, screenshot, check console).
+- Optional polish: tighten **shell styling** against the captured
+  `petcentral`/`quickref` screenshots.
+- Before create-a-pet **step 2**, grab `/customizepet/` (see the capture
+  inventory) — step 2 is inferred until then.
 
 Ground rules never change: **capture first, original assets, strict TS, verify in
 the browser.** See [`architecture.md`](architecture.md) to get oriented in the
@@ -103,25 +116,37 @@ tier words (`src/data/stats.ts`), so feeding/training can move them for real.
 - [ ] **Care actions** — feed (needs items/economy, Phase 3), edit description.
 - [ ] **Refine create-a-pet step 2** — after capturing `/customizepet/`.
 
-## Phase 3 — Economy
+## Phase 3 — Shops & items (storefront UI, on the mock)
 
-Make NP real: inventory, a basic NPC shop (buy/sell), and NP balance changes.
-This is the first thing that needs **persistence** — forces the backend decision.
+Pulled forward. Build the shopping experience *visually* against mock data:
+Neopia Central (the shopping hub), the bazaar/plaza rows of NPC shop fronts, a
+shop front (item grid with prices), an item view, and the inventory. All on the
+in-memory store — **no persistence yet**. Purchases are stubbed/disabled with a
+note until Phase 4. Capture-first: the shop sub-pages aren't grabbed yet (we
+only have the `/objects/` index), so map + grab that area before building.
 
-## Phase 4 — Games
+## Phase 4 — Real economy (spending & persistence)
+
+Make it *stick*: buying/selling actually moves NP and inventory, and the changes
+persist and are shared between friends. **This is the phase that forces the
+backend + auth decision** (see open decisions). Turns the Phase 3 storefronts
+from a display into a working economy.
+
+## Phase 5 — Games
 
 One simple arcade game that pays out NP on a score. Establishes the earn→spend
-loop end to end.
+loop end to end (and gives the economy something to feed it).
 
-## Phase 5+ — Social & world
+## Phase 6+ — Social & world
 
 Boards, mail, guilds; then world/lands, contests, news, and polish. These are
-what make it fun *with friends* and are the reason for a real backend.
+what make it fun *with friends* and lean hardest on a real backend.
 
-## Open decisions (resolve before/at Phase 3)
+## Open decisions (resolve before/at Phase 4)
 
-1. **Backend & persistence.** Frontend-only mock is fine through Phase 2. Once
-   pets/NP/items must persist and be shared between friends, we need a backend
+1. **Backend & persistence.** Frontend-only mock carries us through **Phase 3**
+   (shop *browsing* on the mock). **Phase 4** — when buying/selling must actually
+   move NP/items, persist, and be shared between friends — needs a backend
    (options to weigh: a lightweight Node/API + Postgres; or a BaaS like Supabase).
    *Undecided.*
 2. **Auth.** How friends log in (email/password, magic link, an existing

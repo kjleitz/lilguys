@@ -85,8 +85,10 @@ Retarget it at any site via env vars (`CAPTURE_BASE_URL`, etc.) — see
 - ✅ Reference-capture tool working against neopetsclassic.com
 - ✅ App shell (sidebar + status box), Pet Central, Quick Ref, single pet page
 - ✅ Create-a-Pet rebuilt from a real capture (capture-first workflow proven)
-- 🔄 **Phase 2 pet detail pages next** — description, abilities, trophies, public
-  lookup (all already captured).
+- 🔜 **Shops pulled forward** — build the storefront UI (Neopia Central, bazaar,
+  plaza) on the mock next; real spending/persistence deferred to Phase 4.
+- 🔄 Phase 2 pet detail pages (description, abilities, trophies, public lookup)
+  continue in parallel — all already captured.
 - ⏭️ **Start here:** the "Next up" section of [`docs/roadmap.md`](docs/roadmap.md).
 
 ## Docs
