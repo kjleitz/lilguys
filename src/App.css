@@ -1,11 +1,412 @@
-.app-shell {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
-  text-align: center;
+/* ------------------------------------------------------------------ *
+ * lilguys — shell styles
+ *
+ * Original identity, classic-hub energy: a sun-yellow rail with heavy
+ * black borders on a white page, dense and link-forward. Palette and
+ * wordmark are our own.
+ * ------------------------------------------------------------------ */
+
+:root {
+  --ink: #1a1710; /* warm near-black — borders & text */
+  --sun: #ffd23f; /* sidebar yellow */
+  --sun-deep: #f2b705; /* deeper yellow — accents & active */
+  --paper: #ffffff; /* page background */
+  --grape: #6b3fa0; /* secondary accent */
+  --link: #2f2fb8; /* link blue-violet */
+  --link-hover: #6b3fa0;
+  --muted: #6a6355;
+  --track: #e7e2d4; /* stat-bar track */
+
+  --border: 3px solid var(--ink);
+  --radius: 10px;
 }
 
-.app-shell h1 {
-  font-size: 3rem;
-  margin-bottom: 0.25rem;
+/* ------------------------------- shell ---------------------------- */
+
+.app-shell {
+  display: flex;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+.main-column {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 0; /* let content shrink instead of overflowing */
+}
+
+.content {
+  flex: 1 1 auto;
+  padding: 1.5rem 2rem;
+  max-width: 900px;
+}
+
+.site-footer {
+  padding: 1rem 2rem 1.5rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+  border-top: 1px dashed var(--track);
+}
+
+/* ------------------------------ sidebar --------------------------- */
+
+.sidebar {
+  flex: 0 0 190px;
+  align-self: stretch;
+  background: var(--sun);
+  border-right: var(--border);
+  padding: 0.75rem 0.75rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.wordmark {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 1.9rem;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  padding: 0.4rem 0;
+  border: var(--border);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+.wordmark-lil {
+  color: var(--ink);
+}
+.wordmark-guys {
+  color: var(--grape);
+}
+
+/* ------ nav ------ */
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.55rem;
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.05rem;
+  border: 2px solid transparent;
+  border-radius: 8px;
+}
+.nav-link:hover {
+  background: var(--paper);
+  border-color: var(--ink);
+}
+.nav-link.is-active {
+  background: var(--paper);
+  border-color: var(--ink);
+  box-shadow: 2px 2px 0 var(--sun-deep);
+}
+.nav-glyph {
+  flex: 0 0 1.2em;
+  text-align: center;
+  color: var(--grape);
+}
+.nav-label {
+  text-transform: lowercase;
+}
+
+/* ------ status box ------ */
+
+.status-box {
+  margin-top: auto;
+  border: var(--border);
+  border-radius: var(--radius);
+  background: var(--paper);
+  padding: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.clock {
+  font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  text-align: center;
+  background: var(--sun);
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  padding: 0.2rem;
+}
+
+.status-lines {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.85rem;
+}
+.status-line {
+  display: flex;
+  gap: 0.35rem;
+}
+.status-line dt {
+  color: var(--muted);
+  min-width: 2.4em;
+}
+.status-line dd {
+  margin: 0;
+  font-weight: 700;
+}
+.status-user {
+  color: var(--grape);
+}
+.status-mood {
+  color: var(--muted);
+  font-weight: 400;
+}
+.status-np {
+  color: var(--link);
+}
+
+.status-search,
+.status-lang {
+  display: flex;
+  gap: 0.25rem;
+}
+.status-search input,
+.status-lang select {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  padding: 0.15rem 0.3rem;
+  font: inherit;
+  font-size: 0.8rem;
+}
+.status-search button,
+.status-lang button {
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  background: var(--sun-deep);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.15rem 0.4rem;
+  cursor: pointer;
+}
+.status-search button:hover,
+.status-lang button:hover {
+  background: var(--sun);
+}
+
+/* ------------------------------- pages ---------------------------- */
+
+.page {
+  animation: fade-in 0.15s ease-out;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.banner {
+  border: var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(var(--sun), var(--sun-deep));
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+}
+.banner-title {
+  margin: 0;
+  font-size: 2.4rem;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-transform: lowercase;
+}
+
+.lead {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  margin: 0 0 1.25rem;
+}
+
+.section-heading {
+  text-transform: lowercase;
+  font-size: 1.2rem;
+  margin: 1.25rem 0 0.6rem;
+}
+
+a {
+  color: var(--link);
+  font-weight: 700;
+}
+a:hover {
+  color: var(--link-hover);
+}
+
+/* ------ active pet card ------ */
+
+.active-pet-card {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  box-shadow: 4px 4px 0 var(--sun);
+}
+.active-pet-avatar {
+  flex: 0 0 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--paper);
+  background: var(--grape);
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+}
+.active-pet-info {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.active-pet-info h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+.active-pet-species {
+  margin: 0.1rem 0 0.5rem;
+  color: var(--muted);
+  text-transform: lowercase;
+}
+
+.stat-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.stat-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+.stat-bar-label {
+  flex: 0 0 3.5em;
+  color: var(--muted);
+  text-transform: lowercase;
+}
+.stat-bar-track {
+  flex: 1 1 auto;
+  height: 12px;
+  background: var(--track);
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.stat-bar-fill {
+  display: block;
+  height: 100%;
+  background: var(--sun-deep);
+}
+.stat-bar-value {
+  flex: 0 0 2.5em;
+  text-align: right;
+  font-weight: 700;
+}
+
+/* ------ hub tile grid ------ */
+
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  text-decoration: none;
+  color: var(--ink);
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  background: var(--paper);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+.tile:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--sun-deep);
+  color: var(--ink);
+}
+.tile-glyph {
+  font-size: 1.6rem;
+  color: var(--grape);
+  line-height: 1;
+}
+.tile-label {
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-transform: lowercase;
+}
+.tile-blurb {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+/* ------ totals ------ */
+
+.rule {
+  border: none;
+  border-top: 1px dashed var(--track);
+  margin: 1.5rem 0;
+}
+.totals {
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+}
+.totals dt {
+  color: var(--muted);
+  text-transform: lowercase;
+  font-size: 0.85rem;
+}
+.totals dd {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--grape);
+}
+
+/* ---------------------------- responsive -------------------------- */
+
+@media (max-width: 640px) {
+  .app-shell {
+    flex-direction: column;
+  }
+  .sidebar {
+    flex-basis: auto;
+    align-self: stretch;
+    border-right: none;
+    border-bottom: var(--border);
+  }
+  .status-box {
+    margin-top: 0;
+  }
 }
