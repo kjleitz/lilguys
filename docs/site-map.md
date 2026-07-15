@@ -59,11 +59,27 @@ The emotional core is areas **1, 3, 4** (own/care for a pet, earn, spend). The
 social layer (**5, 6**) is what makes it fun *with friends* but can come later.
 Areas 7–10 are polish.
 
+## Real navigation (decoded from the captured HTML)
+
+The sidebar and Pet Central icon rows are **2004-style image maps**
+(`<map>`/`<area>` coords over one sidebar graphic), not text links — which is
+why early discovery logged them as "(no text)". Decoded from the grabbed
+`petcentral` HTML, the real destinations are:
+
+**Sidebar:** Pet Central `/petcentral/` · Create a Pet `/addpet/` · Neomail
+`/neomessages/` · World / Explore `/explore/` · Chat (boards) `/neoboards/` ·
+Games `/gameroom/` · Shops `/objects/` · News `/nf/` · Help `/help/` ·
+Login `/loginpage/` · Logout (form POST `/logout/`).
+
+**Pet Central icon rows:** quick ref `/quickref/` · abilities `/abilities/` ·
+description `/neopet_desc/` · trophies `/prizes/` · pet's page `/edithomepage/` ·
+feed `/howtofeed/` · items `/inventory/` · neohome `/neohome/` · then a second
+row of world/community shortcuts (world events, calendar `/calendar/`, all pets
+`/allpets/`, quests `/quests/`, high scores `/topneopets/`, greeting
+`/sendgreeting/`, all petpets `/allpetpets/`).
+
 ## Known gaps in this map
 
-- The sidebar's nav links are **icon images** (no text), so the automated
-  extractor logged them as "(no text)"; we read the real nav off the screenshot
-  instead. If we want a complete machine-readable link inventory later, improve
-  the extractor to read `alt`/`title`/image filenames.
-- We've only mapped Pet Central so far. Deep-capturing a few more hubs (a pet
-  page, a shop, a game) will fill in the per-area layouts when we build them.
+- We've deep-captured the pet system + core shell pages (see
+  `capture/output/pages/`). Other areas (a game, a world, boards) get captured
+  just before we build them — capture-first.
