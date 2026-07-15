@@ -5,16 +5,19 @@
 // something real to render before there's any backend. When persistence
 // arrives (Phase 3), the shapes stay; only the source changes.
 
-/** A species of lil guy. Purely cosmetic for now. */
-export type Species =
-  | "blorb"
-  | "sprig"
-  | "tuffet"
-  | "nib"
-  | "wisp";
+// The option lists double as the source of truth for their union types, so a
+// picker can iterate them and the types can never drift from what's offered.
 
-/** A mood, derived from care stats, shown on the pet's card. */
-export type Mood = "happy" | "content" | "grumpy" | "hungry" | "sick";
+/** Species of lil guy. Original to lilguys — purely cosmetic for now. */
+export const SPECIES = ["blorb", "sprig", "tuffet", "nib", "wisp"] as const;
+export type Species = (typeof SPECIES)[number];
+
+/** A lil guy's colour — our own palette of coat names. */
+export const COLOURS = ["sunny", "mossy", "berry", "cloudy", "dusk", "coral"] as const;
+export type Colour = (typeof COLOURS)[number];
+
+export const GENDERS = ["male", "female"] as const;
+export type Gender = (typeof GENDERS)[number];
 
 /** A smaller companion that belongs to a Pet. */
 export interface Petpet {
@@ -23,16 +26,39 @@ export interface Petpet {
   kind: string;
 }
 
-/** A "lil guy" — the pet an Owner cares for. */
+/**
+ * A "lil guy" — the pet an Owner cares for.
+ *
+ * All stats are stored as numbers (0–100, except the level-scaled health pair
+ * and the counters). The UI never shows the raw numbers: it renders them as
+ * classic tier words via data/stats.ts (e.g. hunger 92 → "bloated"). Keeping
+ * them numeric means feeding, training, and battle can move them for real.
+ */
 export interface Pet {
   id: string;
   name: string;
   species: Species;
-  /** 0–100 care stats. Mood is derived from these. */
-  hunger: number;
-  health: number;
-  happiness: number;
+  colour: Colour;
+  gender: Gender;
+  /** Days since this lil guy was created. */
+  ageDays: number;
   level: number;
+
+  /** Current / maximum hit points. Shown as "current / max". */
+  health: number;
+  maxHealth: number;
+
+  /** 0 = dying/empty, 100 = bloated/full. */
+  hunger: number;
+  /** 0 = miserable, 100 = delighted. Drives the displayed mood. */
+  happiness: number;
+
+  strength: number;
+  defence: number;
+  movement: number;
+  intelligence: number;
+  fishingLevel: number;
+
   description: string;
   petpet: Petpet | null;
 }

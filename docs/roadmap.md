@@ -9,8 +9,8 @@ with [`site-map.md`](site-map.md) (what the areas *are*) and the root
 | Phase | State |
 |---|---|
 | 0. Foundations & reference tooling | ✅ done |
-| 1. App shell + Pet Central hub | ⏭️ **up next** |
-| 2. Pets: create, quick ref, pet page | ⬜ planned |
+| 1. App shell + Pet Central hub | ✅ done |
+| 2. Pets: create, quick ref, pet page | ⏭️ **in progress** |
 | 3. Economy: NP, inventory, a shop | ⬜ planned |
 | 4. Games (one game, wired to NP) | ⬜ planned |
 | 5. Social: boards / mail | ⬜ later |
@@ -23,30 +23,40 @@ with [`site-map.md`](site-map.md) (what the areas *are*) and the root
   login, discovery map, deep-grab. See `capture/README.md`.
 - Discovery pass complete; structure documented in `site-map.md`.
 
-## Phase 1 — App shell + Pet Central (current)
+## Phase 1 — App shell + Pet Central ✅
 
 **Goal:** the persistent frame + the hub page render, with placeholder data.
 
-- [ ] **App shell**
-  - [ ] `Sidebar` — primary nav (Pet Central, Create a Pet, Neomail, World,
-        Explore, Boards, Games, Shops, News, Help, Login/Logout).
-  - [ ] `StatusBox` — clock, current user, active pet, NP balance.
-  - [ ] Layout: fixed sidebar + routed content pane. Add a router
-        (`react-router`).
-- [ ] **Pet Central page** — the hub: a grid of links to the main areas, a
-      welcome blurb, and simple site stats (total owners / total pets).
-- [ ] **Placeholder data layer** — a typed mock "current user + pet + NP" so the
-      shell has something to show. No backend yet (see open decisions).
-- [ ] Nav links route to stub pages ("coming soon") so the skeleton is walkable.
+- [x] **App shell** — `Sidebar` (nav + status box: clock, user, active pet, NP,
+      search, language) + routed content pane, via `react-router`.
+- [x] **Pet Central page** — welcome, active-pet card, hub tile grid, site stats.
+- [x] **Placeholder data layer** — typed mock owner/pet/NP; now a reactive
+      in-memory store (`src/data/store.ts`) so mutations update the whole shell.
+- [x] Nav links route to walkable "coming soon" stubs.
 
-**Design note:** build our *own* visual identity from the start — original
-palette, logo wordmark ("Lilguys"), and pet mascots. Match the *layout energy*
-of the classic hub (dense, friendly, link-forward), not its exact styles.
+Built with our own identity (lowercase `lilguys` wordmark, sun-yellow/black/white
+palette).
 
-## Phase 2 — Pets
+## Phase 2 — Pets (in progress)
 
-Create-a-lil-guy flow → a new pet with species/color/name. Quick-ref card listing
-your pets. A single pet's page (stats, description, feed/health action).
+**Reference:** captured `neopetsclassic.com/quickref/` — the pet data model is
+species/colour/gender/age/level + health (x/max) + qualitative tiers for
+hunger/strength/defence/movement/intelligence/mood. We store numbers and render
+tier words (`src/data/stats.ts`), so feeding/training can move them for real.
+
+- [x] **Expanded `Pet` model** + stat display layer (numbers → classic tiers).
+- [x] **Quick Ref** (`/quickref`) — all pets, active is bold, click a picture to
+      make it active (reactive), inactive pets faded.
+- [x] **Single pet's page** (`/pet/:id`) — portrait, full stat readout, make-active.
+- [x] **Create-a-Pet** (`/create`) — name + species/colour/gender → hatch a
+      level-1 pet into the store, becomes active.
+- [ ] **Care actions** — feed (needs items/economy, Phase 3), edit description.
+- [ ] **Public pet lookup** — capture `/petlookup/` + `/neopet_desc/` and build
+      the public-facing view (distinct from the owner view).
+
+Note: create-a-pet's real reference URL still isn't captured — the sidebar nav
+didn't extract (the capture tool looks for HTML5 landmarks this 2004-era site
+doesn't use). Grab it when polishing this flow.
 
 ## Phase 3 — Economy
 

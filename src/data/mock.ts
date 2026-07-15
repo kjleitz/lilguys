@@ -1,10 +1,11 @@
-import type { Mood, Owner, Pet } from "./types";
+import type { Owner, Pet } from "./types";
 
-// A single stubbed owner so the shell can render a real user, active pet, and
-// NP balance. This is deliberately the only place the numbers live — swap it
-// for a real data source later without touching the components.
+// The initial stubbed owner so the shell can render a real user, active pet,
+// and NP balance. This is the only place the starting numbers live; the store
+// (store.ts) takes it from here and makes it mutable/reactive. Swap this for a
+// real data source later without touching components.
 
-export const currentOwner: Owner = {
+export const initialOwner: Owner = {
   id: "owner-1",
   username: "hesitantacrobat",
   np: 1050,
@@ -14,10 +15,19 @@ export const currentOwner: Owner = {
       id: "pet-1",
       name: "Kaumandoop",
       species: "blorb",
-      hunger: 72,
-      health: 90,
-      happiness: 64,
+      colour: "sunny",
+      gender: "male",
+      ageDays: 14,
       level: 3,
+      health: 12,
+      maxHealth: 15,
+      hunger: 72,
+      happiness: 64,
+      strength: 22,
+      defence: 30,
+      movement: 18,
+      intelligence: 55,
+      fishingLevel: 2,
       description: "A blorb of few words and many snacks.",
       petpet: { id: "petpet-1", name: "Squib", kind: "nibbler" },
     },
@@ -25,28 +35,28 @@ export const currentOwner: Owner = {
       id: "pet-2",
       name: "Pindle",
       species: "sprig",
-      hunger: 40,
-      health: 100,
-      happiness: 88,
+      colour: "mossy",
+      gender: "female",
+      ageDays: 3,
       level: 1,
+      health: 10,
+      maxHealth: 10,
+      hunger: 40,
+      happiness: 88,
+      strength: 8,
+      defence: 18,
+      movement: 8,
+      intelligence: 40,
+      fishingLevel: 1,
       description: "Sprightly, leafy, and perpetually curious.",
       petpet: null,
     },
   ],
 };
 
-/** The pet currently shown in the status box. */
+/** The active pet within an owner. Throws if the id doesn't resolve. */
 export function getActivePet(owner: Owner): Pet {
   const pet = owner.pets.find((p) => p.id === owner.activePetId);
   if (!pet) throw new Error(`Active pet ${owner.activePetId} not found`);
   return pet;
-}
-
-/** Derive a mood from a pet's care stats, worst-first. */
-export function moodOf(pet: Pet): Mood {
-  if (pet.health < 40) return "sick";
-  if (pet.hunger < 35) return "hungry";
-  if (pet.happiness < 40) return "grumpy";
-  if (pet.happiness >= 75) return "happy";
-  return "content";
 }

@@ -1,13 +1,15 @@
 import { NavLink } from "react-router-dom";
 import { navItems } from "../data/nav";
-import { currentOwner, getActivePet, moodOf } from "../data/mock";
+import { getActivePet } from "../data/mock";
+import { useOwner } from "../data/store";
+import { moodLabel } from "../data/stats";
 import Clock from "./Clock";
 
 // The persistent left rail: wordmark, primary nav, and a status box (clock,
 // user, active pet, NP, search, language). Present on every page.
 
 export default function Sidebar() {
-  const owner = currentOwner;
+  const owner = useOwner();
   const activePet = getActivePet(owner);
 
   return (
@@ -44,7 +46,10 @@ export default function Sidebar() {
           <div className="status-line">
             <dt>pet</dt>
             <dd>
-              {activePet.name} <span className="status-mood">({moodOf(activePet)})</span>
+              <NavLink to="/quickref" className="status-pet-link">
+                {activePet.name}
+              </NavLink>{" "}
+              <span className="status-mood">({moodLabel(activePet)})</span>
             </dd>
           </div>
           <div className="status-line">

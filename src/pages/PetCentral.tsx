@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom";
 import { navItems } from "../data/nav";
-import { currentOwner, getActivePet, moodOf } from "../data/mock";
+import { getActivePet } from "../data/mock";
+import { useOwner } from "../data/store";
+import { healthFraction, moodLabel } from "../data/stats";
+import PetAvatar from "../components/PetAvatar";
 
 // The hub. Dense, friendly, link-forward — the first place you land, and the
 // jumping-off point to everything else. Original lilguys copy and layout.
 
 export default function PetCentral() {
-  const owner = currentOwner;
+  const owner = useOwner();
   const activePet = getActivePet(owner);
 
   // Everything except Pet Central itself becomes a hub tile.
@@ -24,20 +27,31 @@ export default function PetCentral() {
       </p>
 
       <section className="active-pet-card">
-        <div className="active-pet-avatar" aria-hidden="true">
-          {activePet.name.charAt(0)}
-        </div>
+        <Link to={`/pet/${activePet.id}`} className="active-pet-avatar-link">
+          <PetAvatar
+            species={activePet.species}
+            colour={activePet.colour}
+            name={activePet.name}
+            size={64}
+          />
+        </Link>
         <div className="active-pet-info">
-          <h2>{activePet.name}</h2>
+          <h2>
+            <Link to={`/pet/${activePet.id}`}>{activePet.name}</Link>
+          </h2>
           <p className="active-pet-species">
-            level {activePet.level} {activePet.species} · {moodOf(activePet)}
+            level {activePet.level} {activePet.colour} {activePet.species} ·{" "}
+            {moodLabel(activePet)}
           </p>
           <div className="stat-bars">
+            <StatBar label="health" value={healthFraction(activePet) * 100} />
             <StatBar label="hunger" value={activePet.hunger} />
-            <StatBar label="health" value={activePet.health} />
             <StatBar label="happy" value={activePet.happiness} />
           </div>
         </div>
+        <Link to="/quickref" className="active-pet-quickref">
+          quick ref →
+        </Link>
       </section>
 
       <h3 className="section-heading">where to?</h3>
@@ -70,7 +84,7 @@ export default function PetCentral() {
 }
 
 function StatBar({ label, value }: { label: string; value: number }) {
-  const clamped = Math.max(0, Math.min(100, value));
+  const clamped = Math.round(Math.max(0, Math.min(100, value)));
   return (
     <div className="stat-bar">
       <span className="stat-bar-label">{label}</span>
