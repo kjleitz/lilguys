@@ -1,9 +1,25 @@
-# One URL per line. Lines starting with # are ignored.
-# Add the pages whose layout/structure you want to reference while building.
-# These are just starting suggestions — edit freely.
+# Pages to deep-capture with `npm run capture:grab` (screenshot + full HTML).
+#
+# These are REAL URLs discovered by the capture:map discovery pass — not
+# hand-guessed. Grab captures each page's full rendered HTML + a screenshot so
+# we can clone it faithfully (capture-first: never build a page we haven't
+# grabbed). Lines starting with # are ignored.
+#
+# NOTE: create-a-pet's URL isn't here yet — it's a sidebar icon link the map
+# couldn't extract. Once we grab petcentral/quickref below, we'll read the
+# real sidebar HTML, find its URL, and add it for a second pass.
 
-https://www.neopets.com/
-# https://www.neopets.com/inventory.phtml
-# https://www.neopets.com/quickref.phtml
-# https://www.neopets.com/market.phtml
-# https://www.neopets.com/games/
+# --- pet system (cloning these first) ---
+https://neopetsclassic.com/petcentral/
+https://neopetsclassic.com/quickref/
+https://neopetsclassic.com/quickref/adjust_position/
+https://neopetsclassic.com/neopet_desc/
+https://neopetsclassic.com/petlookup/?pet_name=Kaumandoop
+https://neopetsclassic.com/neopet_items/?pet_name=Kaumandoop
+
+# --- core shell / economy areas (cloning next) ---
+https://neopetsclassic.com/inventory/
+https://neopetsclassic.com/objects/
+https://neopetsclassic.com/pound/
+https://neopetsclassic.com/neomessages/
+https://neopetsclassic.com/userlookup/?user=hesitantacrobat

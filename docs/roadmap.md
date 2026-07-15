@@ -4,6 +4,16 @@ How we're building Lilguys, what's done, and the decisions still open. Pair this
 with [`site-map.md`](site-map.md) (what the areas *are*) and the root
 [`README.md`](../README.md) (vision + ground rules).
 
+## Approach: capture-first cloning
+
+We build **near-exact visual replicas** of the reference pages, and we **capture
+each page before building it** (`capture:grab` → screenshot + full HTML), then
+reproduce its layout, styling, and behavior. No guessing at a page's design.
+Assets stay original (our art/logos/names/copy); we don't ship their files or
+paste prose verbatim. Pages built earlier from assumptions get rebuilt from a
+real capture — **create-a-pet is first in line** (the current version was
+guessed and doesn't match).
+
 ## Status at a glance
 
 | Phase | State |
@@ -48,8 +58,8 @@ tier words (`src/data/stats.ts`), so feeding/training can move them for real.
 - [x] **Quick Ref** (`/quickref`) — all pets, active is bold, click a picture to
       make it active (reactive), inactive pets faded.
 - [x] **Single pet's page** (`/pet/:id`) — portrait, full stat readout, make-active.
-- [x] **Create-a-Pet** (`/create`) — name + species/colour/gender → hatch a
-      level-1 pet into the store, becomes active.
+- [~] **Create-a-Pet** (`/create`) — a working flow exists but was **guessed**,
+      not captured; rebuild it to match the real page once grabbed.
 - [ ] **Care actions** — feed (needs items/economy, Phase 3), edit description.
 - [ ] **Public pet lookup** — capture `/petlookup/` + `/neopet_desc/` and build
       the public-facing view (distinct from the owner view).

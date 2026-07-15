@@ -1,11 +1,12 @@
 # Lilguys
 
-A cozy virtual-pet website — an original **homage to the classic (early-2000s)
+A cozy virtual-pet website — a personal **homage to the classic (early-2000s)
 Neopets** era, built for the author and their friends to play together.
 
-> **Not affiliated with Neopets.** Lilguys is inspired by the *structure and feel*
-> of classic Neopets, but ships **entirely original names, art, copy, and code**.
-> We never copy anyone's assets. See [Ground rules](#ground-rules).
+> **Not affiliated with Neopets.** Lilguys closely reproduces the *layout, styling,
+> and behavior* of the classic look (via the community revival at neopetsclassic.com)
+> as our reference — but ships **our own art, logos, pet names, and copy**. We never
+> ship anyone's asset files or paste their prose verbatim. See [Ground rules](#ground-rules).
 
 ---
 
@@ -20,9 +21,13 @@ currency by playing → spend it on items/shops → show off & socialize.**
 
 ## Ground rules
 
-1. **Original assets only.** No pet art, item images, logos, or copy from Neopets
-   (classic or modern) ships in Lilguys. We use the real site purely as a
-   *structural/layout reference*, then build our own look and content.
+1. **Clone the look, not the assets.** We reproduce the reference site's layout,
+   styling, and behavior closely — but ship **our own** pet art, item images,
+   logos, pet/species names, and copy. No asset files from Neopets (classic or
+   modern), and no prose pasted verbatim (write our own equivalents). Short
+   functional labels ("Quick Reference", "Species") are fine to match.
+   **Capture-first:** grab the real page before building it — never guess at a
+   page's layout.
 2. **Reference material stays local.** The capture tool (below) saves
    screenshots/HTML for study; those live under `capture/output/` and are
    gitignored. Never commit or redistribute them.
@@ -78,9 +83,11 @@ Retarget it at any site via env vars (`CAPTURE_BASE_URL`, etc.) — see
 
 - ✅ Project scaffolded (Vite + React + TS, strict, builds clean)
 - ✅ Reference-capture tool working against neopetsclassic.com
-- ✅ Discovery pass done — see [`docs/site-map.md`](docs/site-map.md)
-- ⏭️ **Next:** build the app shell (sidebar + status box) and the **Pet Central**
-  hub page. See [`docs/roadmap.md`](docs/roadmap.md).
+- ✅ App shell (sidebar + status box) and Pet Central / Quick Ref pages
+- 🔄 **Shifting to capture-first cloning:** grab each real page before building
+  it, and rebuild the pages built from assumptions (e.g. create-a-pet) to match.
+- ⏭️ **Next:** crawl the main areas, then clone them page-by-page. See
+  [`docs/roadmap.md`](docs/roadmap.md).
 
 ## Docs
 
