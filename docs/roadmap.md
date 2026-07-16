@@ -22,7 +22,7 @@ and [`architecture.md`](architecture.md) for how the code is laid out.
 | 0. Foundations & reference tooling | ✅ done |
 | 1. App shell + Pet Central hub | ✅ done |
 | 2. Pets: create, quick ref, pet page | 🔄 core done; detail pages next |
-| 3. Shops & items — storefront UI (on the mock) | 🔜 **pulled forward** |
+| 3. Shops & items — storefront UI (on the mock) | ✅ storefronts done; inventory page optional |
 | 4. Real economy — spending & persistence | ⬜ needs backend decision |
 | 5. Games (one game, wired to NP) | ⬜ planned |
 | 6. Social: boards / mail | ⬜ later |
@@ -30,27 +30,11 @@ and [`architecture.md`](architecture.md) for how the code is laid out.
 
 ## ▶ Next up — start here
 
-**Shops have been pulled forward** (Phase 3). We build the storefront UI on the
-in-memory mock now; "actually spend NP and keep it" is deferred to Phase 4 (it
-needs the backend decision). Two tracks, do them in whatever order suits:
+**Track A (shops storefront) is done** — see Phase 3 below. The remaining work is
+**Track B** (finish the Phase 2 pet detail pages), then Phase 4 (real economy),
+which is gated on the backend + auth decisions.
 
-### Track A — Shops storefront UI (the priority)
-
-1. **Capture the shop area first** — we only have the shops index (`/objects/`),
-   not the Neopia Central / bazaar / plaza sub-pages. Run a discovery pass to
-   find their real URLs, then grab them:
-   ```
-   npm run capture:map -- https://neopetsclassic.com/objects/ --deep 8
-   npm run capture:grab      # after adding the discovered URLs to capture/urls.txt
-   ```
-2. **Clone the storefronts** from the captures: the shopping hub, a shop front
-   (grid of items with prices), and an item view. Wire routes in `src/main.tsx`;
-   promote the `shops` nav stub to a real page.
-3. **Wire to the mock, not persistence:** browsing works against mock item data;
-   "buy" can be stubbed/disabled with a note until Phase 4. Read the NP balance
-   from the store; don't yet mutate it on purchase.
-
-### Track B — Finish Phase 2 pet detail pages
+### Track B — Finish Phase 2 pet detail pages (the priority now)
 
 Already captured (see [`reference-captures.md`](reference-captures.md)) — pure
 capture → clone. Good targets, each linked from Quick Ref / the Pet Central icon
@@ -116,14 +100,33 @@ tier words (`src/data/stats.ts`), so feeding/training can move them for real.
 - [ ] **Care actions** — feed (needs items/economy, Phase 3), edit description.
 - [ ] **Refine create-a-pet step 2** — after capturing `/customizepet/`.
 
-## Phase 3 — Shops & items (storefront UI, on the mock)
+## Phase 3 — Shops & items (storefront UI, on the mock) ✅
 
-Pulled forward. Build the shopping experience *visually* against mock data:
-Neopia Central (the shopping hub), the bazaar/plaza rows of NPC shop fronts, a
-shop front (item grid with prices), an item view, and the inventory. All on the
-in-memory store — **no persistence yet**. Purchases are stubbed/disabled with a
-note until Phase 4. Capture-first: the shop sub-pages aren't grabbed yet (we
-only have the `/objects/` index), so map + grab that area before building.
+Pulled forward and built visually against a mock catalog. Captured the shop area
+first (`objects`, `market_bazaar`, `market_plaza`, two `viewshop` fronts) and
+decoded it in [`site-map.md`](site-map.md).
+
+- [x] **Shops catalog** (`src/data/shops.ts`) — original lilguys shops/items and
+      the hub model (Neopia Central → Bazaar/Plaza → shop fronts). Static
+      reference data (browsing only), not the reactive store.
+- [x] **Hubs** (`ShopsHub` + `ShopMap`) — the reference hubs are big map images
+      with clickable regions; we don't have that art, so hubs render as
+      **placeholder-with-hotspots** (caption + tile grid). `ShopMap` already has
+      the live image+`hotspot` branch, so real map art drops in as pure data.
+- [x] **Shop front** (`ShopFront`) — shopkeeper, greeting, live inflation line,
+      item grid (price/stock). Buying is disabled behind `PURCHASING_ENABLED`
+      with a browsing-only note; **no NP moves** until Phase 4.
+- [x] **Placeholder art** (`PlaceholderArt`) — swappable stand-in for item/keeper
+      graphics, same seam idea as `PetAvatar`.
+- [x] Routes wired in `main.tsx`; the `shops` nav is a real page, not a stub.
+
+**Key finding:** there's no separate item-detail page — clicking an item goes to
+an ephemeral `/haggle/` purchase page (that's Phase 4). So the item grid *is* the
+shop front, and the captured inventory view is the "item detail" counterpart.
+
+Optional leftover: a proper **inventory** page (we have `inventory.html`
+captured); the shop-toolbar links (Your Shop, Shop Wizard, Marketplace) are
+Phase 4 territory.
 
 ## Phase 4 — Real economy (spending & persistence)
 

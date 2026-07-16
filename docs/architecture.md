@@ -9,7 +9,8 @@ captured pages to clone from).
 - **Vite + React 19 + TypeScript** (strict; see house rules in the root README).
 - **react-router-dom** for routing.
 - **No backend yet.** All state is an in-memory mock (see the store below). This
-  is deliberate through Phase 2; persistence is the Phase 3 decision.
+  is deliberate through Phase 3 (shop *browsing* runs on the mock); persistence
+  is the Phase 4 decision.
 
 ## The data layer (`src/data/`)
 
@@ -22,6 +23,7 @@ This is the heart of the app. Four small files, each with one job:
 | `store.ts` | A tiny **reactive store** over the owner, built on `useSyncExternalStore`. Components read via `useOwner()`; mutations replace the owner immutably and notify subscribers, so the sidebar and every page update together. This is the **seam a real backend slots into** — swap the in-memory value for fetched/persisted state, keep the API. Exposes: `useOwner()`, `setActivePet(id)`, `createPet(pet)`, and the rules `MAX_PETS`, `CREATE_BONUS_NP`. |
 | `stats.ts` | The **display layer** for pet stats. Pets store plain numbers; the UI never shows them. `hungerLabel`, `moodLabel`, `strengthLabel`, `defenceLabel`, `movementLabel`, `intelligenceLabel` map a 0–100 value onto a worst→best tier ladder (e.g. hunger 92 → `bloated`). `healthFraction` is for meters. Keeping stats numeric means feeding/training/battle can move them for real. |
 | `nav.ts` | The primary navigation list. **Single source of truth** for both the sidebar nav and the Pet Central hub tiles, so they can't drift. |
+| `shops.ts` | The **shops catalog**: `Shop`/`ShopItem`/`ShopHub` types plus the static data (original lilguys shops, hub hierarchy Neopia Central → Bazaar/Plaza). Browsing-only reference data — **not** the reactive store, since nothing mutates until Phase 4. `getHub`/`getShop`/`shopsInHub` read it; `PURCHASING_ENABLED` (currently `false`) is the single gate for buying. |
 
 ## Components (`src/components/`)
 
@@ -34,6 +36,11 @@ This is the heart of the app. Four small files, each with one job:
   touching callers.
 - `PetStats.tsx` — the classic quick-ref stat readout (identity block + health +
   tier words). Shared by Quick Ref and the pet page.
+- `PlaceholderArt.tsx` — **placeholder item/shopkeeper art**: a tinted, bordered
+  tile with a glyph. Same swap-in-real-art-later seam as `PetAvatar`.
+- `ShopMap.tsx` — a hub's shopping map. No map art yet, so it renders a
+  placeholder banner + a tile grid of destinations; it already has the
+  image+`hotspot` branch for when the real map graphic (and hotspot coords) land.
 
 ## Pages (`src/pages/`) and routing
 
@@ -46,6 +53,9 @@ Routes are declared in `src/main.tsx`. `App.tsx` is the shell (sidebar + routed
 | `/quickref` | `QuickRef.tsx` | All pets; active is bold; click a picture to activate; inactive faded. |
 | `/pet/:petId` | `PetPage.tsx` | One pet: portrait, full stat readout, make-active. |
 | `/addpet` | `CreatePet.tsx` | Two-step create wizard (species → customise). |
+| `/shops` | `ShopsHub.tsx` | Neopia Central — the top shopping hub. |
+| `/shops/:hubId` | `ShopsHub.tsx` | A district hub (`bazaar`, `plaza`). |
+| `/shops/shop/:shopId` | `ShopFront.tsx` | An NPC shop front: keeper + item grid (buying off until Phase 4). |
 | everything else in `nav.ts` | `ComingSoon.tsx` | Walkable stub so the skeleton is fully navigable. |
 
 `main.tsx` builds the stub routes automatically from `nav.ts`, minus the paths in
