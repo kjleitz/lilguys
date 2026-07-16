@@ -30,18 +30,17 @@ what reference already exists before re-grabbing anything.
 
 | Page | URL | Cloned? |
 |---|---|---|
-| Inventory | `/inventory/` | ⬜ captured, not built (Phase 3) |
-| Shops | `/objects/` | ⬜ captured, not built (Phase 3) |
+| Inventory | `/inventory/` | ⬜ captured, not built (Phase 3 leftover) |
+| Shops — Neopia Central (hub) | `/objects/` | ✅ `ShopsHub.tsx` (placeholder map + hotspot tiles) |
+| Shops — Bazaar (sub-hub) | `/market_bazaar/` | ✅ `ShopsHub.tsx` |
+| Shops — Plaza (sub-hub) | `/market_plaza/` | ✅ `ShopsHub.tsx` |
+| Shops — shop front | `/viewshop/?shop_id=2`, `=3` | ✅ `ShopFront.tsx` (item grid; buying off until Phase 4) |
 | The Pound | `/pound/` | ⬜ captured, not built |
 | Neomail | `/neomessages/` | ⬜ captured, not built (Phase 6) |
 | User lookup | `/userlookup/?user=…` | ⬜ captured, not built |
 
 ## Not yet captured (need a grab before building)
 
-- **Shop sub-pages (Phase 3, next priority)** — we only have the `/objects/`
-  index, not **Neopia Central**, the **bazaar/plaza** shop rows, an individual
-  **shop front**, or an **item view**. Map the shop area to find their URLs, then
-  grab: `npm run capture:map -- https://neopetsclassic.com/objects/ --deep 8`.
 - **`/customizepet/`** — create-a-pet **step 2** (colour/name). Only loads after
   POSTing a species choice, so a plain GET can't reach it. Walk the real create
   flow, then grab it. Our step 2 is inferred until then.
